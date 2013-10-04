@@ -44,11 +44,6 @@ define duplicity::job(
     default => $cloud
   }
 
-  $_pubkey_id = $pubkey_id ? {
-    undef => $duplicity::params::pubkey_id,
-    default => $pubkey_id
-  }
-
   $_hour = $hour ? {
     undef => $duplicity::params::hour,
     default => $hour
@@ -132,7 +127,7 @@ define duplicity::job(
     mode    => '0700',
   }
 
-  if $_pubkey_id {
-    @duplicity::gpg{ $_pubkey_id: }
+  if $pubkey_id and !duplicity::gpg{
+    @duplicity::gpg{ $pubkey_id: }
   }
 }
